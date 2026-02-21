@@ -31,6 +31,8 @@ jobs:
           registry_token: ${{ github.token }}
           pr_event_number: ${{ github.event.number }}
           maximize_build_space: true
-          # THE CRITICAL FIX:
-          is_signed: false 
+          # This tells the Action not to check for keys at the start
+          is_signed: false
+          # This tells the CLI tool to skip the signing process entirely
+          build_opts: "--no-sign"
           
