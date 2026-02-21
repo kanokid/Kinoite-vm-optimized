@@ -24,8 +24,4 @@ modules:
       - curl
       - zsh
 
-  - type: script
-    scripts:
-      - ./install-fresh.sh # Adding the ./ ensures it looks in the current build directory
-
   - type: signing # This tells BlueBuild to sign the final image
