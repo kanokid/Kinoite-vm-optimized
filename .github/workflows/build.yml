@@ -1,11 +1,11 @@
 name: bluebuild
 on:
   schedule:
-    - cron: "00 06 * * *" # Build at 06:00 UTC every day
+    - cron: "00 06 * * *"
   push:
     paths-ignore:
       - "**.md"
-  workflow_dispatch: # Allows you to click "Run Workflow" manually
+  workflow_dispatch:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
   cancel-in-progress: true
@@ -31,4 +31,6 @@ jobs:
           registry_token: ${{ github.token }}
           pr_event_number: ${{ github.event.number }}
           maximize_build_space: true
+          # This tells the underlying CLI tool not to look for keys
+          build_opts: "--no-sign" 
           
