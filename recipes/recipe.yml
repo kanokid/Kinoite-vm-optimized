@@ -2,7 +2,6 @@
 name: my-kinoite-f43
 description: Optimized Kinoite 43 with Fresh, Tilix, and VM drivers.
 
-# Switched to Kinoite (KDE) for Fedora 43
 base-image: ghcr.io/ublue-os/kinoite-main
 image-version: 43 
 
@@ -14,11 +13,10 @@ modules:
 
   - type: rpm-ostree
     repos:
-      # Tilix is usually in the main repos, but we'll ensure starship stays
-      copr:
-        - atim/starship
+      # Use the direct URL to avoid the "value is not of type array" error
+      - https://copr.fedorainfracloud.org/coprs/atim/starship/repo/fedora-%OS_VERSION%/atim-starship-fedora-%OS_VERSION%.repo
     install:
-      # VMware Smooth Performance Drivers
+      # VMware Essential Drivers
       - open-vm-tools
       - open-vm-tools-desktop
       # Your Core Tools
@@ -28,13 +26,23 @@ modules:
       - git
       - curl
     remove:
-      # Swapping pre-installed Firefox for Flatpak version
       - firefox
       - firefox-langpacks
 
   - type: script
     scripts:
-      # Custom script to grab the 'Fresh' binary since it's rarely in RPM repos
+      - install-fresh.sh
+
+  - type: default-flatpaks
+    configurations:
+      - notify: true
+        scope: system
+        install:
+          - org.mozilla.firefox
+      - scope: user
+
+  - type: signing
+  # Custom script to grab the 'Fresh' binary since it's rarely in RPM repos
       - install-fresh.sh
 
   - type: default-flatpaks
