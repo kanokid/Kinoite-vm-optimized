@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
-name: my-kinoite-f43
+name: kinoite-vmware-f43
 description: Optimized Kinoite 43 with Fresh, Tilix, and VM drivers.
 
 base-image: ghcr.io/ublue-os/kinoite-main
