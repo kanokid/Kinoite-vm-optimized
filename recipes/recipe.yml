@@ -3,7 +3,7 @@ name: my-kinoite-f43
 description: Optimized Kinoite 43 with Fresh, Tilix, and VM drivers.
 
 base-image: ghcr.io/ublue-os/kinoite-main
-image-version: 43 
+image-version: "43" 
 
 modules:
   - type: files
@@ -13,13 +13,10 @@ modules:
 
   - type: rpm-ostree
     repos:
-      # Use the direct URL to avoid the "value is not of type array" error
-      - https://copr.fedorainfracloud.org/coprs/atim/starship/repo/fedora-%OS_VERSION%/atim-starship-fedora-%OS_VERSION%.repo
+      - https://copr.fedorainfracloud.org/coprs/atim/starship/repo/fedora-43/atim-starship-fedora-43.repo
     install:
-      # VMware Essential Drivers
       - open-vm-tools
       - open-vm-tools-desktop
-      # Your Core Tools
       - tilix
       - micro
       - starship
@@ -40,19 +37,4 @@ modules:
         install:
           - org.mozilla.firefox
       - scope: user
-
-  - type: signing
-  # Custom script to grab the 'Fresh' binary since it's rarely in RPM repos
-      - install-fresh.sh
-
-  - type: default-flatpaks
-    configurations:
-      - notify: true
-        scope: system
-        install:
-          - org.mozilla.firefox
-          - org.kde.kdenlive # Example: KDE video editor
-      - scope: user
-
-  - type: signing
-  
+      
