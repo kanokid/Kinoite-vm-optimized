@@ -30,8 +30,13 @@ modules:
     scripts:
       - install-fresh.sh
 
-  - type: default-flatpaks
-    install:
-      - org.mozilla.firefox
+- type: default-flatpaks
+    configurations:
+      - notify: true
+        scope: system
+        install:
+          - org.mozilla.firefox
+      - scope: user
+        # You can leave this empty or add user-specific flatpaks here
 
   - type: signing # This tells BlueBuild to sign the final image
