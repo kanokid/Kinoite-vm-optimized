@@ -1,45 +1,50 @@
----
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
-# image will be published to ghcr.io/<user>/<name>
-name: template
-# description will be included in the image's metadata
-description: This is my personal OS image.
+name: my-kinoite-f43
+description: Optimized Kinoite 43 with Fresh, Tilix, and VM drivers.
 
-# the base image to build on top of (FROM) and the version tag to use
-base-image: ghcr.io/ublue-os/silverblue-main
-image-version: 42 # latest is also supported if you want new updates ASAP
+# Switched to Kinoite (KDE) for Fedora 43
+base-image: ghcr.io/ublue-os/kinoite-main
+image-version: 43 
 
-# module configuration, executed in order
-# you can include multiple instances of the same module
 modules:
   - type: files
     files:
       - source: system
-        destination: / # copies files/system/* (* means everything inside it) into your image's root folder /
+        destination: /
 
-  - type: dnf
+  - type: rpm-ostree
     repos:
+      # Tilix is usually in the main repos, but we'll ensure starship stays
       copr:
         - atim/starship
     install:
-      packages:
-        - micro
-        - starship
+      # VMware Smooth Performance Drivers
+      - open-vm-tools
+      - open-vm-tools-desktop
+      # Your Core Tools
+      - tilix
+      - micro
+      - starship
+      - git
+      - curl
     remove:
-      packages:
-        # example: removing firefox (in favor of the flatpak)
-        # "firefox" is the main package, "firefox-langpacks" is a dependency
-        - firefox
-        - firefox-langpacks # also remove firefox dependency (not required for all packages, this is a special case)
+      # Swapping pre-installed Firefox for Flatpak version
+      - firefox
+      - firefox-langpacks
+
+  - type: script
+    scripts:
+      # Custom script to grab the 'Fresh' binary since it's rarely in RPM repos
+      - install-fresh.sh
 
   - type: default-flatpaks
     configurations:
-      - notify: true # Send notification after install/uninstall is finished (true/false)
+      - notify: true
         scope: system
-        # If no repo information is specified, Flathub will be used by default
-        install: # system flatpaks we want all users to have and not remove
+        install:
           - org.mozilla.firefox
-          - org.gnome.Loupe
-      - scope: user # Also add Flathub user repo, but no user packages
+          - org.kde.kdenlive # Example: KDE video editor
+      - scope: user
 
-  - type: signing # this sets up the proper policy & signing files for signed images to work fully
+  - type: signing
+  
