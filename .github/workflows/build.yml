@@ -31,6 +31,6 @@ jobs:
           registry_token: ${{ github.token }}
           pr_event_number: ${{ github.event.number }}
           maximize_build_space: true
-          # Explicitly disable signing to prevent the private key error
-          build_opts: "--no-sign"
+          # THE CRITICAL FIX:
+          is_signed: false 
           
