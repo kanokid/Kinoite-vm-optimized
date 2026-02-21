@@ -31,6 +31,6 @@ jobs:
           registry_token: ${{ github.token }}
           pr_event_number: ${{ github.event.number }}
           maximize_build_space: true
-          # This tells the underlying CLI tool not to look for keys
-          build_opts: "--no-sign" 
+          # Explicitly disable signing to prevent the private key error
+          build_opts: "--no-sign"
           
